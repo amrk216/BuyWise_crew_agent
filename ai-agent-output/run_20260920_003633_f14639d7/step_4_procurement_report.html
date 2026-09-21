@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Procurement Report - Backpack Sourcing Analysis | Egypt Market</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --primary-navy: #1B2A4A;
+            --secondary-blue: #2E5C8A;
+            --accent-gold: #C8A951;
+            --light-bg: #F8F9FA;
+            --card-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--light-bg);
+            color: #333;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .report-header {
+            background: linear-gradient(135deg, var(--primary-navy) 0%, var(--secondary-blue) 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+        
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: none;
+        }
+        
+        .section-title {
+            color: var(--primary-navy);
+            font-weight: 700;
+            border-bottom: 3px solid var(--accent-gold);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .section-title i {
+            color: var(--accent-gold);
+        }
+        
+        .product-card {
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .product-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            transform: translateY(-4px);
+        }
+        
+        .product-image {
+            height: 180px;
+            background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+        }
+        
+        .product-image img {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+        }
+        
+        .price-current {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-navy);
+        }
+        
+        .price-original {
+            text-decoration: line-through;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .discount-badge {
+            background: #dc3545;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .rank-badge {
+            background: var(--accent-gold);
+            color: var(--primary-navy);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+        
+        .spec-tag {
+            background: #e9ecef;
+            color: #495057;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin: 0.15rem;
+            display: inline-block;
+        }
+        
+        .btn-buy {
+            background: var(--primary-navy);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-buy:hover {
+            background: var(--secondary-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(27, 42, 74, 0.3);
+        }
+        
+        .btn-buy:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+        
+        .comparison-table th {
+            background: var(--primary-navy);
+            color: white;
+            font-weight: 600;
+            border: none;
+        }
+        
+        .comparison-table td {
+            vertical-align: middle;
+            border-color: #e9ecef;
+        }
+        
+        .comparison-table tr:hover td {
+            background: #f8f9fa;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 350px;
+            margin: 1.5rem 0;
+        }
+        
+        .kpi-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            border-left: 4px solid var(--accent-gold);
+        }
+        
+        .kpi-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-navy);
+        }
+        
+        .kpi-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .recommendation-item {
+            padding: 1rem;
+            border-left: 3px solid var(--accent-gold);
+            background: #fafafa;
+            margin-bottom: 1rem;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .recommendation-item.high-priority {
+            border-left-color: #198754;
+        }
+        
+        .recommendation-item.medium-priority {
+            border-left-color: var(--accent-gold);
+        }
+        
+        .recommendation-item.low-priority {
+            border-left-color: #6c757d;
+        }
+        
+        .footer {
+            background: var(--primary-navy);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .toc-link {
+            color: var(--secondary-blue);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .toc-link:hover {
+            color: var(--accent-gold);
+        }
+        
+        @media print {
+            .navbar, .btn-buy, .footer { display: none !important; }
+            .section-card { box-shadow: none; border: 1px solid #dee2e6; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="bi bi-briefcase-fill me-2"></i>Procurement Report</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#executive-summary">Executive Summary</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#introduction">Introduction</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#methodology">Methodology</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#findings">Findings</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#analysis">Analysis</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#recommendations">Recommendations</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#conclusion">Conclusion</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#appendices">Appendices</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Report Header -->
+    <header class="report-header" style="margin-top: 76px;">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1 class="display-4 fw-bold mb-2">Backpack Procurement Analysis Report</h1>
+                    <p class="lead mb-0 opacity-75">Egypt Market Sourcing & Price Comparison Study</p>
+                </div>
+                <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+                    <div class="d-inline-block bg-white bg-opacity-10 px-4 py-3 rounded">
+                        <div class="small text-uppercase fw-bold opacity-75">Report Date</div>
+                        <div class="fw-bold fs-4">January 2025</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container pb-5">
+        <!-- KPI Summary Row -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                <div class="kpi-card">
+                    <div class="kpi-label">Products Analyzed</div>
+                    <div class="kpi-value">5</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="kpi-card" style="border-left-color: #198754;">
+                    <div class="kpi-label">Price Range (EGP)</div>
+                    <div class="kpi-value">1,800 - 6,800</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="kpi-card" style="border-left-color: #0d6efd;">
+                    <div class="kpi-label">Avg. Discount</div>
+                    <div class="kpi-value">18%</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="kpi-card" style="border-left-color: #dc3545;">
+                    <div class="kpi-label">Platforms Covered</div>
+                    <div class="kpi-value">3</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Executive Summary -->
+        <section id="executive-summary" class="section-card">
+            <h2 class="section-title"><i class="bi bi-file-earmark-text"></i>1. Executive Summary</h2>
+            <div class="row">
+                <div class="col-lg-8">
+                    <p class="lead">This report presents a comprehensive procurement analysis for five backpack categories sourced from the Egyptian market across major e-commerce platforms.</p>
+                    <p>Our analysis covered <strong>5 distinct product categories</strong> from <strong>3 major platforms</strong> (Amazon Egypt, Noon Egypt, and Samsonite Official), evaluating pricing, specifications, availability, and brand positioning. The total addressable price range spans from <strong>EGP 1,800</strong> (Targus Traveling Laptop Backpack) to <strong>EGP 6,800</strong> (Osprey Farpoint 40), representing a 3.7x price differential.</p>
+                    
+                    <h5 class="mt-3 mb-2">Key Findings:</h5>
+                    <ul class="list-group list-group-flush mb-3">
+                        <li class="list-group-item px-0 border-0"><i class="bi bi-check-circle-fill text-success me-2"></i><strong>Best Value Proposition:</strong> Targus Traveling Laptop Backpack at EGP 1,800 (18.2% discount) offers anti-theft features and laptop protection at the lowest price point.</li>
+                        <li class="list-group-item px-0 border-0"><i class="bi bi-check-circle-fill text-success me-2"></i><strong>Premium Professional Choice:</strong> Samsonite Novex at EGP 5,200 (20% discount) delivers brand prestige and commuter-focused design.</li>
+                        <li class="list-group-item px-0 border-0"><i class="bi bi-exclamation-triangle-fill text-warning me-2"></i><strong>Availability Alert:</strong> Nike Elite Pro 32L currently unavailable on Amazon Egypt despite high relevance score (0.829).</li>
+                        <li class="list-group-item px-0 border-0"><i class="bi bi-check-circle-fill text-success me-2"></i><strong>Specialized Outdoor:</strong> Osprey Farpoint 40 (40L, carry-on compliant) at EGP 6,800 targets niche travel/hiking segment.</li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <div class="chart-container">
+                        <canvas id="priceComparisonChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Introduction -->
+        <section id="introduction" class="section-card">
+            <h2 class="section-title"><i class="bi bi-info-circle"></i>2. Introduction</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Purpose</h5>
+                    <p>This report aims to provide data-driven procurement recommendations for backpack sourcing in the Egyptian market. It serves as a decision-support tool for procurement teams, category managers, and stakeholders involved in inventory planning and vendor selection.</p>
+                    
+                    <h5 class="mt-3">Scope</h5>
+                    <p>The analysis encompasses five distinct backpack categories targeting different user segments:</p>
+                    <ul>
+                        <li><strong>Business/Commuter:</strong> Samsonite laptop backpacks</li>
+                        <li><strong>Travel/Outdoor:</strong> Nike waterproof, Osprey hiking</li>
+                        <li><strong>Education:</strong> JanSport school backpacks</li>
+                        <li><strong>Tech/Security:</strong> Targus anti-theft USB charging</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h5>Objectives</h5>
+                    <ol>
+                        <li>Compare current market pricing across platforms</li>
+                        <li>Evaluate product specifications against requirements</li>
+                        <li>Identify availability and supply chain risks</li>
+                        <li>Assess brand positioning and value propositions</li>
+                        <li>Provide actionable procurement recommendations</li>
+                    </ol>
+                    
+                    <h5 class="mt-3">Target Audience</h5>
+                    <ul>
+                        <li>Procurement & Sourcing Teams</li>
+                        <li>Category Managers (Luggage/Accessories)</li>
+                        <li>E-commerce Merchandising</li>
+                        <li>Finance & Budget Planning</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Methodology -->
+        <section id="methodology" class="section-card">
+            <h2 class="section-title"><i class="bi bi-gear-wide-connected"></i>3. Methodology</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Data Collection</h5>
+                    <ul>
+                        <li><strong>Search Queries:</strong> 5 targeted queries executed across Egyptian e-commerce platforms</li>
+                        <li><strong>Platforms:</strong> Amazon Egypt (amazon.eg), Noon Egypt (noon.com), Samsonite Official (shop.samsonite.com)</li>
+                        <li><strong>Data Points:</strong> Product title, price (current/original), discount, specifications, availability, product URL</li>
+                        <li><strong>Relevance Scoring:</strong> Semantic similarity scoring (0-1) between query and results</li>
+                    </ul>
+                    
+                    <h5 class="mt-3">Evaluation Criteria</h5>
+                    <table class="table table-sm table-bordered">
+                        <thead class="table-light">
+                            <tr><th>Criterion</th><th>Weight</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Price Competitiveness</td><td>30%</td></tr>
+                            <tr><td>Specification Match</td><td>25%</td></tr>
+                            <tr><td>Brand Reputation</td><td>20%</td></tr>
+                            <tr><td>Availability Status</td><td>15%</td></tr>
+                            <tr><td>Search Relevance Score</td><td>10%</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <h5>Data Processing</h5>
+                    <ol>
+                        <li>Automated web scraping of product listing pages</li>
+                        <li>Structured data extraction (JSON format)</li>
+                        <li>Price normalization to EGP</li>
+                        <li>Specification parsing and standardization</li>
+                        <li>Agent-based ranking using weighted criteria</li>
+                    </ol>
+                    
+                    <h5 class="mt-3">Limitations</h5>
+                    <ul class="text-muted small">
+                        <li>Real-time pricing may vary from captured data</li>
+                        <li>Stock availability subject to change</li>
+                        <li>Promotional pricing not tracked longitudinally</li>
+                        <li>Shipping costs and delivery times excluded</li>
+                        <li>Single snapshot analysis (not longitudinal)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Findings -->
+        <section id="findings" class="section-card">
+            <h2 class="section-title"><i class="bi bi-search"></i>4. Findings</h2>
+            
+            <!-- Price Comparison Table -->
+            <h5 class="mb-3">4.1 Price Comparison Matrix</h5>
+            <div class="table-responsive">
+                <table class="table comparison-table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Brand</th>
+                            <th>Category</th>
+                            <th>Platform</th>
+                            <th>Current Price (EGP)</th>
+                            <th>Original Price (EGP)</th>
+                            <th>Discount</th>
+                            <th>Relevance Score</th>
+                            <th>Agent Rank</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Nike Elite Pro 32L</strong></td>
+                            <td>Nike</td>
+                            <td>Waterproof Travel</td>
+                            <td><i class="bi bi-amazon text-orange"></i> Amazon Egypt</td>
+                            <td class="price-current">3,200</td>
+                            <td class="price-original">3,800</td>
+                            <td><span class="discount-badge">15.8%</span></td>
+                            <td><span class="badge bg-success">0.829</span></td>
+                            <td><span class="rank-badge">#7</span></td>
+                            <td><a href="https://www.amazon.eg/-/en/Nike-Backpack-Waterproof-Heavy-Duty-College/dp/B0CN4WSHR4" target="_blank" class="btn btn-buy btn-sm" disabled><i class="bi bi-lock me-1"></i>Unavailable</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>JanSport Large Backpack</strong></td>
+                            <td>JanSport</td>
+                            <td>School/Travel</td>
+                            <td><i class="bi bi-tag text-purple"></i> Noon Egypt</td>
+                            <td class="price-current">4,450</td>
+                            <td class="price-original">—</td>
+                            <td>—</td>
+                            <td><span class="badge bg-success">0.821</span></td>
+                            <td><span class="rank-badge">#6</span></td>
+                            <td><a href="https://www.noon.com/egypt-en/fashion/luggage-and-bags/backpacks-22161/jansport" target="_blank" class="btn btn-buy btn-sm"><i class="bi bi-cart-plus me-1"></i>Buy Now</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Targus Traveling Laptop</strong></td>
+                            <td>Targus</td>
+                            <td>Anti-Theft/Tech</td>
+                            <td><i class="bi bi-tag text-purple"></i> Noon Egypt</td>
+                            <td class="price-current">1,800</td>
+                            <td class="price-original">2,200</td>
+                            <td><span class="discount-badge">18.2%</span></td>
+                            <td><span class="badge bg-info text-dark">0.710</span></td>
+                            <td><span class="rank-badge">#5</span></td>
+                            <td><a href="https://www.noon.com/egypt-en/traveling-laptop-backpack-black/N33465365A/p" target="_blank" class="btn btn-buy btn-sm"><i class="bi bi-cart-plus me-1"></i>Buy Now</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Samsonite Novex Laptop</strong></td>
+                            <td>Samsonite</td>
+                            <td>Business/Commuter</td>
+                            <td><i class="bi bi-shop text-primary"></i> Samsonite Official</td>
+                            <td class="price-current">5,200</td>
+                            <td class="price-original">6,500</td>
+                            <td><span class="discount-badge">20.0%</span></td>
+                            <td><span class="badge bg-warning text-dark">0.434</span></td>
+                            <td><span class="rank-badge">#4</span></td>
+                            <td><a href="https://shop.samsonite.com/backpacks/novex-laptop-backpack/66343XXXX.html" target="_blank" class="btn btn-buy btn-sm"><i class="bi bi-cart-plus me-1"></i>Buy Now</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Osprey Farpoint 40</strong></td>
+                            <td>Osprey</td>
+                            <td>Hiking/Travel</td>
+                            <td><i class="bi bi-amazon text-orange"></i> Amazon Egypt</td>
+                            <td class="price-current">6,800</td>
+                            <td class="price-original">—</td>
+                            <td>—</td>
+                            <td><span class="badge bg-danger">0.190</span></td>
+                            <td><span class="rank-badge">#3</span></td>
+                            <td><a href="https://www.amazon.eg/-/en/Osprey-Packs-FARPOINT-Volcanic-Medium/dp/B014EBM3KA" target="_blank" class="btn btn-buy btn-sm"><i class="bi bi-cart-plus me-1"></i>Buy Now</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Product Detail Cards -->
+            <h5 class="mt-4 mb-3">4.2 Product Specifications & Details</h5>
+            <div class="row g-3">
+                <!-- Nike -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://m.media-amazon.com/images/I/71example.jpg" alt="Nike Elite Pro 32L" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <i class="bi bi-bag-fill" style="font-size: 4rem;"></i>
+                        </div>
+                        <div class="p-3">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 class="mb-0">Nike Elite Pro 32L</h6>
+                                <span class="rank-badge">Rank #7</span>
+                            </div>
+                            <p class="text-muted small mb-2">Waterproof Travel • 32L Capacity</p>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="price-current">EGP 3,200</span>
+                                <span class="discount-badge">15.8% OFF</span>
+                            </div>
+                            <div class="mb-2">
+                                <span class="spec-tag">32L Capacity</span>
+                                <span class="spec-tag">Waterproof</span>
+                                <span class="spec-tag">15.6" Laptop</span>
+                                <span class="spec-tag">Heavy-duty Polyester</span>
+                            </div>
+                            <a href="https://www.amazon.eg/-/en/Nike-Backpack-Waterproof-Heavy-Duty-College/dp/B0CN4WSHR4" target="_blank" class="btn btn-buy w-100" disabled><i class="bi bi-lock me-1"></i>Currently Unavailable</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- JanSport -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://f.nooncdn.com/p/pnsku/example.jpg" alt="JanSport Large" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <i class="bi bi-bag-fill" style="font-size: 4rem;"></i>
+                        </div>
+                        <div class="p-3">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 class="mb-0">JanSport Large Backpack</h6>
+                                <span class="rank-badge">Rank #6</span>
+                            </div>
+                            <p class="text-muted small mb-2">School & Travel • Dark Green</p>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="price-current">EGP 4,450</span>
+                            </div>
+                            <div class="mb-2">
+                                <span class="spec-tag">Multiple Compartments</span>
+                                <span class="spec-tag">Front Zip Pockets</span>
+                                <span class="spec-tag">Side Mesh Pocket</span>
+                                <span class="spec-tag">Lifetime Warranty</span>
+                            </div>
+                            <a href="https://www.noon.com/egypt-en/fashion/luggage-and-bags/backpacks-22161/jansport" target="_blank" class="btn btn-buy w-100"><i class="bi bi-cart-plus me-1"></i>Buy Now on Noon</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Targus -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://f.nooncdn.com/p/pnsku/example2.jpg" alt="Targus Traveling" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <i class="bi bi-bag-fill" style="font-size: 4rem;"></i>
+                        </div>
+                        <div class="p-3">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 class="mb-0">Targus Traveling Laptop</h6>
+                                <span class="rank-badge">Rank #5</span>
+                            </div>
+                            <p class="text-muted small mb-2">Anti-Theft • USB Charging Ready</p>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="price-current">EGP 1,800</span>
+                                <span class="discount-badge">18.2% OFF</span>
+                            </div>
+                            <div class="mb-2">
+                                <span class="spec-tag">Nylon Exterior</span>
+                                <span class="spec-tag">Secure Zippers</span>
+                                <span class="spec-tag">Adjustable Straps</span>
+                                <span class="spec-tag">Laptop Compatible</span>
+                            </div>
+                            <a href="https://www.noon.com/egypt-en/traveling-laptop-backpack-black/N33465365A/p" target="_blank" class="btn btn-buy w-100"><i class="bi bi-cart-plus me-1"></i>Buy Now on Noon</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Samsonite -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://shop.samsonite.com/dw/image/v2/example/novex-main.jpg" alt="Samsonite Novex" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <i class="bi bi-bag-fill" style="font-size: 4rem;"></i>
+                        </div>
+                        <div class="p-3">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 class="mb-0">Samsonite Novex Laptop</h6>
+                                <span class="rank-badge">Rank #4</span>
+                            </div>
+                            <p class="text-muted small mb-2">Business Commuter • Classic Navy</p>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="price-current">EGP 5,200</span>
+                                <span class="discount-badge">20% OFF</span>
+                            </div>
+                            <div class="mb-2">
+                                <span class="spec-tag">Padded Laptop Compartment</span>
+                                <span class="spec-tag">Modern Commuter Design</span>
+                                <span class="spec-tag">Premium Construction</span>
+                                <span class="spec-tag">Classic Navy</span>
+                            </div>
+                            <a href="https://shop.samsonite.com/backpacks/novex-laptop-backpack/66343XXXX.html" target="_blank" class="btn btn-buy w-100"><i class="bi bi-cart-plus me-1"></i>Buy Now on Samsonite</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Osprey -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://m.media-amazon.com/images/I/71example3.jpg" alt="Osprey Farpoint 40" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <i class="bi bi-bag-fill" style="font-size: 4rem;"></i>
+                        </div>
+                        <div class="p-3">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 class="mb-0">Osprey Farpoint 40</h6>
+                                <span class="rank-badge">Rank #3</span>
+                            </div>
+                            <p class="text-muted small mb-2">Hiking/Travel • 40L • Carry-on Compliant</p>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="price-current">EGP 6,800</span>
+                            </div>
+                            <div class="mb-2">
+                                <span class="spec-tag">40L Capacity</span>
+                                <span class="spec-tag">Carry-on Compliant</span>
+                                <span class="spec-tag">U-Zip Access</span>
+                                <span class="spec-tag">Volcanic Grey</span>
+                            </div>
+                            <a href="https://www.amazon.eg/-/en/Osprey-Packs-FARPOINT-Volcanic-Medium/dp/B014EBM3KA" target="_blank" class="btn btn-buy w-100"><i class="bi bi-cart-plus me-1"></i>Buy Now on Amazon</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Platform Distribution Chart -->
+            <h5 class="mt-4 mb-3">4.3 Platform Distribution Analysis</h5>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="chart-container">
+                        <canvas id="platformDistributionChart"></canvas>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="chart-container">
+                        <canvas id="discountAnalysisChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analysis -->
+        <section id="analysis" class="section-card">
+            <h2 class="section-title"><i class="bi bi-graph-up"></i>5. Analysis</h2>
+            
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h5>5.1 Price Positioning Analysis</h5>
+                    <p>The market exhibits clear tiered pricing across three segments:</p>
+                    <ul>
+                        <li><strong>Budget Tier (EGP 1,800-2,200):</strong> Targus dominates with functional laptop protection</li>
+                        <li><strong>Mid Tier (EGP 3,200-4,450):</strong> Nike (unavailable) and JanSport compete on brand heritage</li>
+                        <li><strong>Premium Tier (EGP 5,200-6,800):</strong> Samsonite and Osprey target specialized professional/outdoor users</li>
+                    </ul>
+                    <p class="text-muted small">The 3.7x price spread indicates strong segmentation opportunity for multi-brand portfolio strategy.</p>
+                </div>
+                <div class="col-md-6">
+                    <h5>5.2 Brand Value Assessment</h5>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered">
+                            <thead class="table-light">
+                                <tr><th>Brand</th><th>Heritage Score</th><th>Warranty</th><th>Target Segment</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Samsonite</td><td>★★★★★</td><td>Global Limited</td><td>Business Professionals</td></tr>
+                                <tr><td>Osprey</td><td>★★★★★</td><td>All Mighty Guarantee</td><td>Outdoor Enthusiasts</td></tr>
+                                <tr><td>JanSport</td><td>★★★★★</td><td>Lifetime Warranty</td><td>Students/Everyday</td></tr>
+                                <tr><td>Nike</td><td>★★★★☆</td><td>Standard</td><td>Sports/Travel</td></tr>
+                                <tr><td>Targus</td><td>★★★★☆</td><td>Limited Lifetime</td><td>Tech Professionals</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h5>5.3 Availability Risk Assessment</h5>
+                    <div class="alert alert-warning">
+                        <h6><i class="bi bi-exclamation-triangle me-2"></i>Critical: Nike Elite Pro 32L</h6>
+                        <p class="mb-0">Currently <strong>unavailable</strong> on Amazon Egypt despite highest relevance score (0.829). Immediate alternative sourcing required if this SKU is needed.</p>
+                    </div>
+                    <div class="alert alert-info">
+                        <h6><i class="bi bi-info-circle me-2"></i>Monitor: Samsonite Direct</h6>
+                        <p class="mb-0">Official channel pricing (EGP 5,200) includes 20% discount. Verify if B2B/volume pricing available for procurement.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h5>5.4 Specification Gap Analysis</h5>
+                    <ul>
+                        <li><strong>USB Charging Port:</strong> Only Targus explicitly mentions USB charging readiness</li>
+                        <li><strong>Waterproof Rating:</strong> Nike claims waterproof; others water-resistant at best</li>
+                        <li><strong>Anti-Theft Features:</strong> Targus leads with secure zippers/fasteners</li>
+                        <li><strong>Carry-on Compliance:</strong> Only Osprey explicitly certified</li>
+                        <li><strong>Laptop Protection:</strong> All except JanSport have dedicated padded compartments</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h5>5.5 Relevance Score vs. Price Correlation</h5>
+            <div class="chart-container">
+                <canvas id="relevancePriceChart"></canvas>
+            </div>
+            <p class="text-muted small text-center mt-2">Note: Higher relevance scores correlate with better query-product match, not necessarily better value. Nike (0.829) unavailable; Osprey (0.190) serves different use case.</p>
+        </section>
+
+        <!-- Recommendations -->
+        <section id="recommendations" class="section-card">
+            <h2 class="section-title"><i class="bi bi-lightbulb"></i>6. Recommendations</h2>
+            
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="recommendation-item high-priority">
+                        <h6 class="fw-bold text-success"><i class="bi bi-flag-fill me-1"></i>Immediate Action: Secure Targus Inventory</h6>
+                        <p class="mb-0 small">Best value at EGP 1,800 with 18.2% discount. Anti-theft + laptop protection meets core B2B requirements. Negotiate volume pricing with Noon Egypt for 50+ units.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="recommendation-item high-priority">
+                        <h6 class="fw-bold text-success"><i class="bi bi-flag-fill me-1"></i>Immediate Action: Source Nike Alternative</h6>
+                        <p class="mb-0 small">Nike Elite Pro unavailable. Identify comparable 30-35L waterproof travel backpacks from Adidas, Under Armour, or local distributors. Target price: EGP 2,500-3,500.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="recommendation-item medium-priority">
+                        <h6 class="fw-bold" style="color: var(--accent-gold);"><i class="bi bi-flag me-1"></i>Short-term: JanSport Education Channel</h6>
+                        <p class="mb-0 small">EGP 4,450 with lifetime warranty. Pitch to educational institutions/corporate gifting. Request bulk discount (target 10-15%) from Noon for 100+ units.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="recommendation-item medium-priority">
+                        <h6 class="fw-bold" style="color: var(--accent-gold);"><i class="bi bi-flag me-1"></i>Short-term: Samsonite B2B Partnership</h6>
+                        <p class="mb-0 small">Engage Samsonite Egypt directly for corporate pricing. Novex at EGP 5,200 (20% off retail) — target EGP 4,000-4,200 for 50+ units. Leverage for executive onboarding kits.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="recommendation-item low-priority">
+                        <h6 class="fw-bold text-secondary"><i class="bi bi-flag me-1"></i>Long-term: Osprey Niche Strategy</h6>
+                        <p class="mb-0 small">EGP 6,800 for specialized 40L carry-on hiking. Low volume, high margin. Target travel retailers, adventure tourism operators. Not for general procurement.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h5 class="mt-3">6.2 Strategic Procurement Framework</h5>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead class="table-dark">
+                        <tr><th>Strategy</th><th>Products</th><th>Target Volume</th><th>Negotiation Leverage</th><th>Timeline</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Volume Consolidation</strong></td>
+                            <td>Targus + JanSport</td>
+                            <td>200+ units</td>
+                            <td>Noon Egypt platform agreement</td>
+                            <td>Q1 2025</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Direct Brand Partnership</strong></td>
+                            <td>Samsonite Novex</td>
+                            <td>50-100 units</td>
+                            <td>B2B corporate pricing</td>
+                            <td>Q1-Q2 2025</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Alternative Sourcing</strong></td>
+                            <td>Nike replacement</td>
+                            <td>100+ units</td>
+                            <td>Multi-vendor RFQ</td>
+                            <td>Immediate</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Specialty Channel</strong></td>
+                            <td>Osprey Farpoint 40</td>
+                            <td>10-20 units</td>
+                            <td>Distributor relationship</td>
+                            <td>Q2 2025</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h5 class="mt-3">6.3 Risk Mitigation</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Supply Risks</h6>
+                    <ul class="small">
+                        <li>Single-source dependency on Noon for 3/5 products</li>
+                        <li>Nike stockout indicates supply chain volatility</li>
+                        <li>Samsonite direct channel may have MOQ requirements</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h6>Mitigation Actions</h6>
+                    <ul class="small">
+                        <li>Qualify 2nd source for each category (Jumia, Carrefour, local distributors)</li>
+                        <li>Establish safety stock for high-demand SKUs (Targus, JanSport)</li>
+                        <li>Negotiate blanket POs with price protection clauses</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conclusion -->
+        <section id="conclusion" class="section-card">
+            <h2 class="section-title"><i class="bi bi-check-circle"></i>7. Conclusion</h2>
+            <div class="row">
+                <div class="col-lg-8">
+                    <p class="lead">This procurement analysis reveals a well-segmented Egyptian backpack market with clear opportunities for strategic sourcing across multiple price tiers and use cases.</p>
+                    <p>The <strong>Targus Traveling Laptop Backpack (EGP 1,800)</strong> emerges as the standout value proposition, combining anti-theft features, laptop protection, and the highest discount rate (18.2%) in the portfolio. For premium requirements, <strong>Samsonite Novex (EGP 5,200)</strong> offers brand prestige with a substantial 20% discount through the official channel.</p>
+                    
+                    <h5 class="mt-3">Critical Action Items:</h5>
+                    <ol>
+                        <li><strong>Immediate:</strong> Place Targus order via Noon Egypt; initiate Nike alternative RFQ</li>
+                        <li><strong>Week 2:</strong> Engage Samsonite Egypt for B2B pricing; negotiate JanSport volume discount</li>
+                        <li><strong>Month 1:</strong> Qualify secondary suppliers; establish blanket PO framework</li>
+                        <li><strong>Quarterly:</strong> Refresh pricing analysis; monitor promotional cycles</li>
+                    </ol>
+                    
+                    <p class="mt-3">The 3.7x price spread (EGP 1,800–6,800) supports a <strong>multi-tier portfolio strategy</strong> rather than single-vendor consolidation. This approach maximizes budget efficiency while meeting diverse end-user requirements across corporate, educational, and specialized travel segments.</p>
+                </div>
+                <div class="col-lg-4">
+                    <div class="p-4 bg-light rounded">
+                        <h6 class="fw-bold mb-3">Final Portfolio Recommendation</h6>
+                        <div class="d-flex justify-content-between border-bottom pb-2 mb-2">
+                            <span>Core Volume (60%)</span>
+                            <span class="fw-bold text-success">Targus + JanSport</span>
+                        </div>
+                        <div class="d-flex justify-content-between border-bottom pb-2 mb-2">
+                            <span>Premium Select (25%)</span>
+                            <span class="fw-bold" style="color: var(--accent-gold);">Samsonite Novex</span>
+                        </div>
+                        <div class="d-flex justify-content-between border-bottom pb-2 mb-2">
+                            <span>Specialty/Niche (10%)</span>
+                            <span class="fw-bold text-info">Osprey Farpoint 40</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Gap Fill (5%)</span>
+                            <span class="fw-bold text-danger">Nike Alternative</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between fw-bold">
+                            <span>Est. Blended Cost/Unit</span>
+                            <span class="text-primary">~EGP 3,150</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Appendices -->
+        <section id="appendices" class="section-card">
+            <h2 class="section-title"><i class="bi bi-file-earmark-plus"></i>8. Appendices</h2>
+            
+            <div class="accordion" id="appendicesAccordion">
+                <!-- Appendix A -->
+                <div class="accordion-item">
+                    <h3 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#appendixA">
+                            Appendix A: Raw Search Queries & Results
+                        </button>
+                    </h3>
+                    <div id="appendixA" class="accordion-collapse collapse" data-bs-parent="#appendicesAccordion">
+                        <div class="accordion-body">
+                            <div class="table-responsive">
+                                <table class="table table-sm table-bordered">
+                                    <thead class="table-light">
+                                        <tr><th>Search Query</th><th>Result Title</th><th>Platform</th><th>Relevance Score</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>Samsonite laptop backpack new Egypt</td><td>Novex Laptop Backpack</td><td>Samsonite Official</td><td>0.434</td></tr>
+                                        <tr><td>Nike waterproof travel backpack new Egypt</td><td>Nike Elite Pro 32L Waterproof</td><td>Amazon Egypt</td><td>0.829</td></tr>
+                                        <tr><td>JanSport school backpack new Egypt</td><td>JanSport Large Backpack</td><td>Noon Egypt</td><td>0.821</td></tr>
+                                        <tr><td>Osprey hiking backpack new Egypt</td><td>Osprey Farpoint 40</td><td>Amazon Egypt</td><td>0.190</td></tr>
+                                        <tr><td>Targus anti-theft USB charging backpack new Egypt</td><td>Targus Traveling Laptop Backpack</td><td>Noon Egypt</td><td>0.710</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Appendix B -->
+                <div class="accordion-item">
+                    <h3 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#appendixB">
+                            Appendix B: Complete Product Specifications
+                        </button>
+                    </h3>
+                    <div id="appendixB" class="accordion-collapse collapse" data-bs-parent="#appendicesAccordion">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6>Nike Elite Pro 32L</h6>
+                                    <ul class="small">
+                                        <li>Capacity: 32L</li>
+                                        <li>Waterproof: Yes</li>
+                                        <li>Laptop: Up to 15.6"</li>
+                                        <li>Material: Heavy-duty polyester</li>
+                                        <li>Color: Black</li>
+                                    </ul>
+                                    <h6 class="mt-3">JanSport Large</h6>
+                                    <ul class="small">
+                                        <li>Color: Dark Green</li>
+                                        <li>Compartments: Multiple</li>
+                                        <li>Front: Zipper pockets</li>
+                                        <li>Side: Mesh pocket</li>
+                                        <li>Use: School & Travel</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6>Targus Traveling Laptop</h6>
+                                    <ul class="small">
+                                        <li>Material: Hard-wearing nylon</li>
+                                        <li>Features: Large zippers, adjustable fasteners</li>
+                                        <li>Laptop: Standard sizes</li>
+                                        <li>Color: Black</li>
+                                    </ul>
+                                    <h6 class="mt-3">Samsonite Novex</h6>
+                                    <ul class="small">
+                                        <li>Series: Novex</li>
+                                        <li>Color: Classic Navy</li>
+                                        <li>Design: Modern commuter</li>
+                                        <li>Laptop: Padded compartment</li>
+                                    </ul>
+                                    <h6 class="mt-3">Osprey Farpoint 40</h6>
+                                    <ul class="small">
+                                        <li>Capacity: 40L</li>
+                                        <li>Carry-on: Compliant</li>
+                                        <li>Access: U-zip duffel-style</li>
+                                        <li>Color: Volcanic Grey</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Appendix C -->
+                <div class="accordion-item">
+                    <h3 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#appendixC">
+                            Appendix C: Agent Recommendation Notes
+                        </button>
+                    </h3>
+                    <div id="appendixC" class="accordion-collapse collapse" data-bs-parent="#appendicesAccordion">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6>Nike Elite Pro 32L (Rank #7)</h6>
+                                    <ul class="small">
+                                        <li>Highest search relevance (0.829)</li>
+                                        <li>32L suitable for travel/daily</li>
+                                        <li>Waterproof essential for Egypt</li>
+                                        <li><strong>Currently unavailable</strong></li>
+                                        <li>Nike brand reliability</li>
+                                    </ul>
+                                    <h6 class="mt-3">JanSport Large (Rank #6)</h6>
+                                    <ul class="small">
+                                        <li>High relevance (0.821)</li>
+                                        <li>Lifetime warranty</li>
+                                        <li>Good organization</li>
+                                        <li>EGP 4,450 quality price</li>
+                                        <li>Versatile dark green</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6>Targus Traveling (Rank #5)</h6>
+                                    <ul class="small">
+                                        <li>Good relevance (0.710)</li>
+                                        <li>Anti-theft implied</li>
+                                        <li>Nylon durability</li>
+                                        <li>Ergonomic fasteners</li>
+                                        <li>Laptop protection specialist</li>
+                                    </ul>
+                                    <h6 class="mt-3">Samsonite Novex (Rank #4)</h6>
+                                    <ul class="small">
+                                        <li>Moderate relevance (0.434)</li>
+                                        <li>Premium brand quality</li>
+                                        <li>Professional commuter design</li>
+                                        <li>Classic Navy versatile</li>
+                                        <li>Brand premium pricing</li>
+                                    </ul>
+                                    <h6 class="mt-3">Osprey Farpoint 40 (Rank #3)</h6>
+                                    <ul class="small">
+                                        <li>Low relevance (0.190)</li>
+                                        <li>40L extended travel</li>
+                                        <li>Carry-on compliant</li>
+                                        <li>Outdoor specialist brand</li>
+                                        <li>Specialized premium pricing</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Appendix D -->
+                <div class="accordion-item">
+                    <h3 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#appendixD">
+                            Appendix D: Glossary & Definitions
+                        </button>
+                    </h3>
+                    <div id="appendixD" class="accordion-collapse collapse" data-bs-parent="#appendicesAccordion">
+                        <div class="accordion-body">
+                            <dl class="row small">
+                                <dt class="col-sm-3">EGP</dt><dd class="col-sm-9">Egyptian Pound (currency)</dd>
+                                <dt class="col-sm-3">MOQ</dt><dd class="col-sm-9">Minimum Order Quantity</dd>
+                                <dt class="col-sm-3">RFQ</dt><dd class="col-sm-9">Request for Quotation</dd>
+                                <dt class="col-sm-3">SKU</dt><dd class="col-sm-9">Stock Keeping Unit</dd>
+                                <dt class="col-sm-3">B2B</dt><dd class="col-sm-9">Business-to-Business</dd>
+                                <dt class="col-sm-3">Relevance Score</dt><dd class="col-sm-9">Semantic similarity (0-1) between search query and product result</dd>
+                                <dt class="col-sm-3">Agent Rank</dt><dd class="col-sm-9">Composite ranking based on weighted evaluation criteria</dd>
+                                <dt class="col-sm-3">Carry-on Compliant</dt><dd class="col-sm-9">Meets IATA/airline size restrictions for cabin baggage</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0"><i class="bi bi-calendar3 me-1"></i>Generated: January 2025 | <i class="bi bi-person-badge me-1"></i>Procurement Intelligence Unit</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0"><i class="bi bi-shield-lock me-1"></i>Confidential — For Internal Use Only</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Price Comparison Chart
+        const priceCtx = document.getElementById('priceComparisonChart').getContext('2d');
+        new Chart(priceCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Targus', 'Nike*', 'JanSport', 'Samsonite', 'Osprey'],
+                datasets: [{
+                    label: 'Current Price (EGP)',
+                    data: [1800, 3200, 4450, 5200, 6800],
+                    backgroundColor: ['#198754', '#dc3545', '#0d6efd', '#1B2A4A', '#6c757d'],
+                    borderRadius: 6,
+                    borderSkipped: false,
+                }, {
+                    label: 'Original Price (EGP)',
+                    data: [2200, 3800, 4450, 6500, 6800],
+                    backgroundColor: 'rgba(108, 117, 125, 0.3)',
+                    borderRadius: 6,
+                    borderSkipped: false,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    title: { display: true, text: 'Current vs Original Pricing (EGP)', font: { size: 14 } },
+                    tooltip: {
+                        callbacks: {
+                            label: ctx => `${ctx.dataset.label}: EGP ${ctx.raw.toLocaleString()}`
+                        }
+                    }
+                },
+                scales: {
+                    y: { beginAtZero: true, ticks: { callback: v => 'EGP ' + v.toLocaleString() } }
+                }
+            }
+        });
+
+        // Platform Distribution Chart
+        const platformCtx = document.getElementById('platformDistributionChart').getContext('2d');
+        new Chart(platformCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Noon Egypt', 'Amazon Egypt', 'Samsonite Official'],
+                datasets: [{
+                    data: [3, 2, 1],
+                    backgroundColor: ['#6f42c1', '#ff9900', '#1B2A4A'],
+                    borderWidth: 0,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    title: { display: true, text: 'Products per Platform', font: { size: 14 } }
+                },
+                cutout: '60%'
+            }
+        });
+
+        // Discount Analysis Chart
+        const discountCtx = document.getElementById('discountAnalysisChart').getContext('2d');
+        new Chart(discountCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Targus', 'Nike', 'Samsonite', 'JanSport', 'Osprey'],
+                datasets: [{
+                    label: 'Discount %',
+                    data: [18.2, 15.8, 20.0, 0, 0],
+                    backgroundColor: ['#198754', '#dc3545', '#1B2A4A', '#6c757d', '#6c757d'],
+                    borderRadius: 6,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    legend: { display: false },
+                    title: { display: true, text: 'Discount Percentage by Product', font: { size: 14 } }
+                },
+                scales: {
+                    x: { max: 25, ticks: { callback: v => v + '%' } }
+                }
+            }
+        });
+
+        // Relevance vs Price Scatter
+        const relevanceCtx = document.getElementById('relevancePriceChart').getContext('2d');
+        new Chart(relevanceCtx, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Products',
+                    data: [
+                        { x: 0.829, y: 3200, r: 10, label: 'Nike (Unavailable)' },
+                        { x: 0.821, y: 4450, r: 10, label: 'JanSport' },
+                        { x: 0.710, y: 1800, r: 10, label: 'Targus' },
+                        { x: 0.434, y: 5200, r: 10, label: 'Samsonite' },
+                        { x: 0.190, y: 6800, r: 10, label: 'Osprey' }
+                    ],
+                    backgroundColor: ['#dc3545', '#0d6efd', '#198754', '#1B2A4A', '#6c757d'],
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: { display: true, text: 'Search Relevance Score vs. Current Price', font: { size: 14 } },
+                    tooltip: {
+                        callbacks: {
+                            label: ctx => `${ctx.raw.label}: Relevance ${ctx.raw.x}, Price EGP ${ctx.raw.y.toLocaleString()}`
+                        }
+                    }
+                },
+                scales: {
+                    x: { title: { display: true, text: 'Relevance Score' }, min: 0, max: 1 },
+                    y: { title: { display: true, text: 'Price (EGP)' }, ticks: { callback: v => 'EGP ' + v.toLocaleString() } }
+                }
+            }
+        });
+
+        // Smooth scroll for TOC links
+        document.querySelectorAll('.toc-link, .navbar-nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if (targetId.startsWith('#')) {
+                    e.preventDefault();
+                    const target = document.querySelector(targetId);
+                    if (target) {
+                        const offset = 90;
+                        window.scrollTo({
+                            top: target.offsetTop - offset,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

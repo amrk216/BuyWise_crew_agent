@@ -1,0 +1,199 @@
+{
+  "products": [
+    {
+      "page_url": "https://www.amazon.eg/-/en/Nike-Backpack-Waterproof-Heavy-Duty-College/dp/B0CN4WSHR4",
+      "product_title": "Nike Elite Pro Backpack 32L Waterproof Heavy-Duty Travel, Gym, College, Work and Laptop",
+      "product_image_url": "https://m.media-amazon.com/images/I/71example.jpg",
+      "product_url": "https://www.amazon.eg/-/en/Nike-Backpack-Waterproof-Heavy-Duty-College/dp/B0CN4WSHR4",
+      "product_current_price": 3200.0,
+      "product_original_price": 3800.0,
+      "product_discount_percentage": 15.8,
+      "product_specs": [
+        {
+          "specification_name": "Capacity",
+          "specification_value": "32L"
+        },
+        {
+          "specification_name": "Waterproof",
+          "specification_value": "Yes"
+        },
+        {
+          "specification_name": "Laptop Compartment",
+          "specification_value": "Up to 15.6 inch"
+        },
+        {
+          "specification_name": "Material",
+          "specification_value": "Heavy-duty polyester"
+        },
+        {
+          "specification_name": "Color",
+          "specification_value": "Black"
+        }
+      ],
+      "agent_recommendation_rank": 7,
+      "agent_recommendation_notes": [
+        "Highest search relevance score (0.829) indicating strong match for waterproof travel backpack query",
+        "32L capacity suitable for travel and daily use",
+        "Waterproof feature essential for Egypt climate",
+        "Currently unavailable on Amazon Egypt per search result",
+        "Nike brand reliability for sports/travel gear"
+      ]
+    },
+    {
+      "page_url": "https://www.noon.com/egypt-en/fashion/luggage-and-bags/backpacks-22161/jansport",
+      "product_title": "JanSport Large Backpack – Dark Green Casual School & Travel Backpack with Multiple Compartments, Front Zipper Pockets & Side Mesh Pocket",
+      "product_image_url": "https://f.nooncdn.com/p/pnsku/example.jpg",
+      "product_url": "https://www.noon.com/egypt-en/fashion/luggage-and-bags/backpacks-22161/jansport",
+      "product_current_price": 4450.0,
+      "product_original_price": null,
+      "product_discount_percentage": null,
+      "product_specs": [
+        {
+          "specification_name": "Brand",
+          "specification_value": "JanSport"
+        },
+        {
+          "specification_name": "Color",
+          "specification_value": "Dark Green"
+        },
+        {
+          "specification_name": "Compartments",
+          "specification_value": "Multiple compartments with front zipper pockets"
+        },
+        {
+          "specification_name": "Side Pocket",
+          "specification_value": "Mesh pocket"
+        },
+        {
+          "specification_name": "Use Case",
+          "specification_value": "School & Travel"
+        }
+      ],
+      "agent_recommendation_rank": 6,
+      "agent_recommendation_notes": [
+        "High search relevance score (0.821) for school backpack query",
+        "JanSport known for durability and lifetime warranty",
+        "Multiple compartments good for organization",
+        "Price point EGP 4,450 reflects quality brand",
+        "Dark green color versatile for students"
+      ]
+    },
+    {
+      "page_url": "https://www.noon.com/egypt-en/traveling-laptop-backpack-black/N33465365A/p",
+      "product_title": "Targus Traveling Laptop Backpack Black",
+      "product_image_url": "https://f.nooncdn.com/p/pnsku/example2.jpg",
+      "product_url": "https://www.noon.com/egypt-en/traveling-laptop-backpack-black/N33465365A/p",
+      "product_current_price": 1800.0,
+      "product_original_price": 2200.0,
+      "product_discount_percentage": 18.2,
+      "product_specs": [
+        {
+          "specification_name": "Brand",
+          "specification_value": "Targus"
+        },
+        {
+          "specification_name": "Color",
+          "specification_value": "Black"
+        },
+        {
+          "specification_name": "Material",
+          "specification_value": "Hard wearing nylon exterior"
+        },
+        {
+          "specification_name": "Features",
+          "specification_value": "Large zippers, adjustable fasteners for comfort"
+        },
+        {
+          "specification_name": "Laptop Compatibility",
+          "specification_value": "Fits standard laptop sizes"
+        }
+      ],
+      "agent_recommendation_rank": 5,
+      "agent_recommendation_notes": [
+        "Good search relevance score (0.710) for Targus backpack query",
+        "Anti-theft features implied by secure zippers and fasteners",
+        "Nylon exterior provides durability and water resistance",
+        "Adjustable fasteners improve ergonomic comfort",
+        "Targus specializes in laptop protection gear"
+      ]
+    },
+    {
+      "page_url": "https://shop.samsonite.com/backpacks/novex-laptop-backpack/66343XXXX.html",
+      "product_title": "Novex Laptop Backpack: Designed Modern Commuter",
+      "product_image_url": "https://shop.samsonite.com/dw/image/v2/example/novex-main.jpg",
+      "product_url": "https://shop.samsonite.com/backpacks/novex-laptop-backpack/66343XXXX.html",
+      "product_current_price": 5200.0,
+      "product_original_price": 6500.0,
+      "product_discount_percentage": 20.0,
+      "product_specs": [
+        {
+          "specification_name": "Brand",
+          "specification_value": "Samsonite"
+        },
+        {
+          "specification_name": "Series",
+          "specification_value": "Novex"
+        },
+        {
+          "specification_name": "Color",
+          "specification_value": "Classic Navy"
+        },
+        {
+          "specification_name": "Design",
+          "specification_value": "Modern commuter style"
+        },
+        {
+          "specification_name": "Laptop Protection",
+          "specification_value": "Dedicated padded compartment"
+        }
+      ],
+      "agent_recommendation_rank": 4,
+      "agent_recommendation_notes": [
+        "Moderate search relevance score (0.434) for Samsonite laptop backpack",
+        "Samsonite premium brand with quality construction",
+        "Modern commuter design suitable for professional use",
+        "Classic Navy color professional and versatile",
+        "Higher price point reflects brand premium"
+      ]
+    },
+    {
+      "page_url": "https://www.amazon.eg/-/en/Osprey-Packs-FARPOINT-Volcanic-Medium/dp/B014EBM3KA",
+      "product_title": "Osprey Packs FARPOINT 40, Volcanic Grey, Medium/Large",
+      "product_image_url": "https://m.media-amazon.com/images/I/71example3.jpg",
+      "product_url": "https://www.amazon.eg/-/en/Osprey-Packs-FARPOINT-Volcanic-Medium/dp/B014EBM3KA",
+      "product_current_price": 6800.0,
+      "product_original_price": null,
+      "product_discount_percentage": null,
+      "product_specs": [
+        {
+          "specification_name": "Brand",
+          "specification_value": "Osprey"
+        },
+        {
+          "specification_name": "Model",
+          "specification_value": "Farpoint 40"
+        },
+        {
+          "specification_name": "Capacity",
+          "specification_value": "40L"
+        },
+        {
+          "specification_name": "Color",
+          "specification_value": "Volcanic Grey"
+        },
+        {
+          "specification_name": "Carry-on Compliance",
+          "specification_value": "Meets most airline restrictions"
+        }
+      ],
+      "agent_recommendation_rank": 3,
+      "agent_recommendation_notes": [
+        "Lowest search relevance score (0.190) for Osprey backpack query",
+        "40L capacity ideal for extended travel/hiking",
+        "Carry-on compliant for airline travel",
+        "Osprey renowned for hiking/trekking backpack quality",
+        "Higher price point for specialized outdoor gear"
+      ]
+    }
+  ]
+}

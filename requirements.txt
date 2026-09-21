@@ -1,0 +1,5 @@
+crewai[tools,agentops,langfuse]==1.15.21
+tavily-python==0.8.1
+scrapegraph-py==2.3.1
+python-dotenv==1.2.3
+python-telegram-bot==22.8
