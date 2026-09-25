@@ -32,6 +32,7 @@ search_queries_recommendation_task = Task(
 )
 
 search_engine_task = Task(
+    
     description="\n".join([
         "Search for relevant and specific product pages.",
         "Avoid general category pages, listing pages, blogs, and informational pages.",
