@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 import os
-
+from litellm import completion
 from crewai import LLM
 from langfuse import get_client
 from tavily import TavilyClient
@@ -12,15 +12,22 @@ load_dotenv()
 
 
 KILO_API_KEY = os.environ["KILO_API_KEY"]
+# OPEN_API_KEY = os.environ["OPEN_API_KEY"]
+GOOGLE_API_KEY = os.environ["GOOGLE_API_KEY"]
+MINIMAX_MODEL = os.environ["MINIMAX_MODEL"]
+
+TAVILY_API_KEY = os.environ["TAVILY_API_KEY"]
+SCRAPEGRAPH_API_KEY = os.environ["SCRAPEGRAPH_API_KEY"]
+MINIMAX_API_KEY = os.environ["MINIMAX_API_KEY"]
+
+# KILO_MODEL = os.environ["KILO_MODEL"]
+COHERE_MODEL = os.environ["COHERE_MODEL"]
+NVIDIA_MODEL = os.environ["NVIDIA_MODEL"]
+# OPEN_MODEL = os.environ["OPEN_API_KEY"]
+
 LANGFUSE_SECRET_KEY = os.environ["LANGFUSE_SECRET_KEY"]
 LANGFUSE_PUBLIC_KEY = os.environ["LANGFUSE_PUBLIC_KEY"]
 LANGFUSE_BASE_URL = os.environ["LANGFUSE_BASE_URL"]
-SCRAPEGRAPH_API_KEY = os.environ["SCRAPEGRAPH_API_KEY"]
-KILO_MODEL = os.environ["KILO_MODEL"]
-COHERE_MODEL = os.environ["COHERE_MODEL"]
-TAVILY_API_KEY = os.environ["TAVILY_API_KEY"]
-ATRIA_API_KEY = os.environ["ATRIA_API_KEY"]
-ATRIA_MODEL = os.environ["ATRIA_MODEL"]
 
 
 # Initialize Langfuse
@@ -52,25 +59,43 @@ output_dir = create_output_dir()
 
 
 # LLM
-KILO_LLM = LLM(
-    model=KILO_MODEL,
-    temperature=0,
-    base_url = "https://api.kilo.ai/api/gateway",
-    provider="openrouter",
-)
+# OPEN_LLM = LLM(
+#     model=OPEN_MODEL,
+#     temperature=0,
+#     base_url="https://openrouter.ai/api/v1",
+#     provider="openrouter",
+#     #max_tokens=3000
+
+# )
+
+# KILO_LLM = LLM(
+#     model=KILO_MODEL,
+#     temperature=0,
+#     base_url = "https://api.kilo.ai/api/gateway",
+#     provider="openrouter",
+# )
 
 COHERE_MODEL = LLM(
     model=COHERE_MODEL,
     temperature=0,
     base_url = "https://api.cohere.ai/v1",
     provider="cohere",
+    
 )
 
-ATRIA_MODEL = LLM(
-    model=ATRIA_MODEL,
+NVIDIA_MODEL = LLM(
+    model=NVIDIA_MODEL,
     temperature=0,
-    base_url = "https://api.atria-asi.ai/v1",
-    provider="atria",
+    base_url = "http://127.0.0.1:1234/v1",
+    # provider="google-genai",
+)
+
+MINIMAX_MODEL = LLM(
+    model=MINIMAX_MODEL,
+    api_key=MINIMAX_API_KEY,
+    temperature=0,
+    base_url = "https://api.minimax.io/v1",
+    provider="minimax",
 )
 
 # Tavily

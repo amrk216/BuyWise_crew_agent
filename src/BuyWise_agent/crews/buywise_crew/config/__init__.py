@@ -1,7 +1,8 @@
 from .config import (
-    KILO_LLM,
+    
     COHERE_MODEL,
-    ATRIA_API_KEY,
+    NVIDIA_MODEL,
+    MINIMAX_MODEL,
     output_dir,
     search_client,
     langfuse,

@@ -43,44 +43,46 @@ buywise_crew = Crew(
     process=Process.sequential,
     
 )
+def run_buywise_crew(inputs: dict):
+    result = buywise_crew.kickoff(inputs=inputs)
+    return result
+
+# with langfuse.start_as_current_observation(
+#     as_type="span",
+#     name="buywise-agent"
+# ):
+#     crew_results = buywise_crew.kickoff(
+#         inputs={
+#             "product_name": "laptop",
+#             "websites_list": [
+#             "www.google.com",
+#             "www.amazon.eg",
+#             "www.jumia.com.eg",
+#             "www.noon.com/egypt-en",
+#             "btech.com",
+#             "2b.com.eg",
+#             "dream2000.com",
+#             "www.rayashop.com",
+#             "www.egprices.com",
+#             "www.compumarts.com",
+#             "www.sigma-computer.com",
+#             "www.abstore.com.eg",
+#             "www.sharafdg.com/egypt-en",
+#             "www.egypt.souq.com",
+#         ],
+#             "country_name": "Egypt",
+#             "no_keywords": 5,
+#             "language": "English,Arabic",
+#             "current_date": current_date,
+#             "score_th": 0.10,
+#             "top_recommendations_no": 10,
+#             "product_condition": "new",
+#             "top_recommendations_no" : 8,
+#             "budget":50000,
 
 
-with langfuse.start_as_current_observation(
-    as_type="span",
-    name="buywise-agent"
-):
-    crew_results = buywise_crew.kickoff(
-        inputs={
-            "product_name": "backpack",
-            "websites_list": [
-            "www.google.com",
-            "www.amazon.eg",
-            "www.jumia.com.eg",
-            "www.noon.com/egypt-en",
-            "btech.com",
-            "2b.com.eg",
-            "dream2000.com",
-            "www.rayashop.com",
-            "www.egprices.com",
-            "www.compumarts.com",
-            "www.sigma-computer.com",
-            "www.abstore.com.eg",
-            "www.sharafdg.com/egypt-en",
-            "www.egypt.souq.com",
-        ],
-            "country_name": "Egypt",
-            "no_keywords": 5,
-            "language": "English,Arabic",
-            "current_date": current_date,
-            "score_th": 0.10,
-            "top_recommendations_no": 10,
-            "product_condition": "new",
-            "top_recommendations_no" : 8,
-            "budget":2100,
-
-
-        }
-    )
+#         }
+#     )
 
 
 langfuse.flush()

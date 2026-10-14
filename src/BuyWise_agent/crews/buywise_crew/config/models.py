@@ -2,10 +2,19 @@
 from pydantic import BaseModel, Field, model_validator
 from typing import List, Optional
 
+class ChatRequest(BaseModel):
+    session_id: str
+    message: str
 
 
+class ChatResponse(BaseModel):
+    session_id: str
+    message: str
+    status: str
+
+    
 class SuggestedSearchQueries(BaseModel):
-    queries: List[str]= Field(..., title="Suggested search queries to be passed to the search engine", min_items = 1,max_length=5)
+    queries: List[str]= Field(..., title="Suggested search queries to be passed to the search engine", min_items = 1,max_length=10)
 
 
 
