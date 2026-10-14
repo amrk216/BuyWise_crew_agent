@@ -234,6 +234,7 @@ Run the BuyWise Crew:
 
 ```bash
 PYTHONPATH=src python -m BuyWise_agent.crews.buywise_crew.buywise_crew
+PYTHONPATH=src uvicorn BuyWise_agent.main:app --reload
 ```
 
 The generated results will be stored in:
